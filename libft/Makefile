@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/30 17:27:40 by skhalil        #+#    #+#                 #
-#    Updated: 2019/12/01 14:30:57 by skhalil       ########   odam.nl          #
+#    Updated: 2019/12/23 18:00:53 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,19 +27,19 @@ FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS)
+	@ar rc $(NAME) $(OBJS)
 
 clean:
-	/bin/rm -f $(OBJS)
+	@/bin/rm -f $(OBJS)
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	/bin/rm -f $(BONUS_O)
+	@/bin/rm -f $(NAME)
+	@/bin/rm -f $(BONUS_O)
 
 re: fclean all
 
 %.o: %.c
-	gcc -c $(FLAGS) -I $(H_DIR) $< -o $@
+	@gcc -c $(FLAGS) -I $(H_DIR) $< -o $@
 
 bonus: $(BONUS_O) $(OBJS)
-	ar rc $(NAME) $(OBJS) $(BONUS_O)
+	@ar rc $(NAME) $(OBJS) $(BONUS_O)
