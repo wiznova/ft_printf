@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2019/12/23 17:59:59 by skhalil       ########   odam.nl          #
+#    Updated: 2020/01/12 18:20:50 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,8 @@ re: fclean all
 
 test:
 	@echo ""
-	@echo "===TEST==="
-	@gcc $(FLAGS) test_ft_printf.c
+	@echo "===TEST SEQUENCE==="
+	@gcc $(FLAGS) test_main.c ft_printf_preprod.c
 	@./a.out
 	@echo "===ENDTEST==="
 	@echo ""
