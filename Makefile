@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2020/01/12 18:20:50 by skhalil       ########   odam.nl          #
+#    Updated: 2020/01/15 15:15:06 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ H_DIR = .
 
 NAME = libftprintf.a
 
-BASENAMES = test_func
+BASENAMES = module_parser tools ft_printf_preprod
 SRCS = $(addsuffix .c,$(BASENAMES))
 OBJS = $(addsuffix .o,$(BASENAMES))
 
@@ -49,7 +49,7 @@ re: fclean all
 test:
 	@echo ""
 	@echo "===TEST SEQUENCE==="
-	@gcc $(FLAGS) test_main.c ft_printf_preprod.c
+	@gcc $(FLAGS) $(SRCS) test_main.c -g
 	@./a.out
 	@echo "===ENDTEST==="
 	@echo ""

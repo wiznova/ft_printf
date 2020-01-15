@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:06:53 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/12 18:05:59 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/01/15 15:28:59 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FT_PRINTF_H
 # define CONV_LIST "cspdiuxX%"
 # define FLAG_LIST "-0" // * and . are part of width and precision respectively
+
+// delete ft_printf_preprod.c file before submission
 
 # include <stdio.h> //delete before submission
 # include <string.h> //delete before submission
@@ -29,6 +31,9 @@ typedef struct	s_format_specs{
 	int		precision; // 6 by def, otherwise parsed
 }				t_format_specs;
 
-int ft_printf(const char *, ...);
+int		ft_printf(const char *format, ...);
+char	is_in_list(char c, char *list);
+void	flag_parser(const char **format, t_format_specs *specs);
+void	format_spec_parser(const char **format, t_format_specs specs, va_list *args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/12 18:20:05 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/01/15 15:02:29 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 **
  */
 
-
-
 void	init_spec_defaults(t_format_specs *specs)
 {
 	specs->justify = 0;
@@ -30,49 +28,7 @@ void	init_spec_defaults(t_format_specs *specs)
 	specs->precision = 6;
 }
 
-char	is_in_list(char c, char *list)
-{
-	while (list)
-	{
-		if (c == *list)
-			return (c);
-		list++;
-	}
-	return (0);
-}
 
-void	flag_parser(const char **format, t_format_specs specs)
-{
-	while (is_in_list(**format, FLAG_LIST) == 0)
-	{
-		if (**format == '0')
-		{
-			specs.padding_ch = '0';
-			specs.justify = 0;
-		}
-		if (**format == '-' && specs.padding_ch != '0')
-			specs.justify = 1;
-	}
-	return ;
-}
-
-void	format_spec_parser(const char **format, t_format_specs specs)
-{
-	while (is_in_list(**format, CONV_LIST) == 0 && **format != '.')
-	{
-		
-		if (is_in_list(**format, "123456789*") != 0)
-		{
-//			if (**format == '*')
-//				va_argshit
-			specs.padding = specs.padding * 10 + **format - '0';
-			break;
-		}
-		(*format)++;
-	}
-	if (is_in_list(**format, CONV_LIST) != 0)
-		return ;
-}
 
 int		ft_printf(const char *format, ...)
 {
@@ -86,7 +42,7 @@ int		ft_printf(const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%')
-			format_spec_parser(&format, specs);
+			format_spec_parser(&format, specs, &args);
 		write(1, format, 1);
 		format++;
 		// first_arg = va_arg(args, int);
