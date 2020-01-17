@@ -6,11 +6,12 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/15 15:02:29 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/01/17 20:04:57 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft/libft.h"
 
 /*
 **	TODO:
@@ -25,14 +26,25 @@ void	init_spec_defaults(t_format_specs *specs)
 	specs->justify = 0;
 	specs->padding = 0;
 	specs->padding_ch = ' ';
-	specs->precision = 6;
+	specs->precision = 0;
 }
 
+void	launch_conversion(char conv, t_format_specs *temp_specs, va_list *args)
+{
+	int		d;
 
+	if (conv == 'd')
+	{
+		d = va_arg(*args, int);
+		ft_putnbr_fd(d, 1);
+	}
+	temp_specs->padding = 0;
+}
 
 int		ft_printf(const char *format, ...)
 {
 	t_format_specs	specs;
+	t_format_specs	temp_specs;
 	va_list			args;
 	int				ret;
 
@@ -42,13 +54,16 @@ int		ft_printf(const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%')
-			format_spec_parser(&format, specs, &args);
-		write(1, format, 1);
+		{
+			temp_specs = format_spec_parser(&format, specs, &args);
+			if (is_in_list(*format, CONV_LIST) != 0)
+				launch_conversion(*format, &temp_specs, &args);
+		}
+		else
+			write(1, format, 1);
 		format++;
 		// first_arg = va_arg(args, int);
 	}
-
-
 	va_end(args);
 	return (ret);
 }
