@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/17 20:04:57 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/01/18 17:17:52 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,41 @@
 **
  */
 
-void	init_spec_defaults(t_format_specs *specs)
+void	init_spec_defaults(t_format_specs *specs, va_list *args)
 {
 	specs->justify = 0;
 	specs->padding = 0;
 	specs->padding_ch = ' ';
 	specs->precision = 0;
+	specs->args = args;
+	specs->ret = 0;
+}
+
+void	ft_putnbr_fd_co(int n, int fd, int *co)
+{
+	if (n == -2147483648)
+	{
+		ft_putchar_fd('-', fd);
+		ft_putchar_fd('2', fd);
+		*co += 2;
+		ft_putnbr_fd_co(147483648, fd, co);
+	}
+	else if (n < 0)
+	{
+		ft_putchar_fd('-', fd);
+		*co += 1;
+		ft_putnbr_fd_co(-n, fd, co);
+	}
+	else if (n > 9)
+	{
+		ft_putnbr_fd_co(n / 10, fd, co);
+		ft_putnbr_fd_co(n % 10, fd, co);
+	}
+	else
+	{
+		ft_putchar_fd(n + '0', fd);
+		*co += 1;
+	}
 }
 
 void	launch_conversion(char conv, t_format_specs *temp_specs, va_list *args)
@@ -36,7 +65,7 @@ void	launch_conversion(char conv, t_format_specs *temp_specs, va_list *args)
 	if (conv == 'd')
 	{
 		d = va_arg(*args, int);
-		ft_putnbr_fd(d, 1);
+		ft_putnbr_fd_co(d, 1, &(temp_specs->ret));
 	}
 	temp_specs->padding = 0;
 }
@@ -50,17 +79,21 @@ int		ft_printf(const char *format, ...)
 
 	ret = 0;
 	va_start(args, format);
-	init_spec_defaults(&specs);
+	init_spec_defaults(&specs, &args);
 	while (*format)
 	{
 		if (*format == '%')
 		{
-			temp_specs = format_spec_parser(&format, specs, &args);
+			temp_specs = format_spec_parser(&format, specs);
 			if (is_in_list(*format, CONV_LIST) != 0)
 				launch_conversion(*format, &temp_specs, &args);
+			ret += temp_specs.ret;
 		}
 		else
+		{
 			write(1, format, 1);
+			ret++;
+		}
 		format++;
 		// first_arg = va_arg(args, int);
 	}

@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/17 19:45:38 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/01/18 17:21:44 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,33 @@ void		flag_parser(const char **format, t_format_specs *specs)
 	}
 }
 
-void		width_parser(const char **format, t_format_specs *specs, va_list *args)
+void		width_parser(const char **format, t_format_specs *specs)
 {
 	while (is_in_list(**format, CONV_LIST) == 0 && **format != '.')
 	{
 		if (**format == '*')
 		{
-			specs->padding = va_arg(*args, int);
+			specs->padding = va_arg(*(specs->args), int);
 			break ;
 		}
 		else if (is_in_list(**format, "1234567890") != 0)
-			specs->padding = specs->padding * 10 + **format - '0';
+			specs->padding = specs->padding * 10 + **format - '0'; //use atoi for that
 		else
 			break ;
 		(*format)++;
 	}
-	if (**format == '.') // also check if precision hasn't been set before that
-		precision_parser(format, specs, args);
+	if (**format == '.')		// also check if precision hasn't been set before that
+		precision_parser(format, specs);
 }
 
-void		precision_parser(const char **format, t_format_specs *specs, va_list *args)
+void		precision_parser(const char **format, t_format_specs *specs)
 {
 	(*format)++;
 	while (is_in_list(**format, CONV_LIST) == 0)
 	{
 		if (**format == '*')
 		{
-			specs->precision = va_arg(*args, int);
+			specs->precision = va_arg(*(specs->args), int);
 			break ;
 		}
 		else if (is_in_list(**format, "1234567890") != 0)
@@ -74,13 +74,13 @@ void		precision_parser(const char **format, t_format_specs *specs, va_list *args
 	}
 }
 
-t_format_specs	format_spec_parser(const char **format, t_format_specs specs, va_list *args)
+t_format_specs	format_spec_parser(const char **format, t_format_specs specs)
 {
 	(*format)++;
 	flag_parser(format, &specs);
 	if (**format == '.')
-		precision_parser(format, &specs, args);
+		precision_parser(format, &specs);
 	else
-		width_parser(format, &specs, args);
+		width_parser(format, &specs);
 	return (specs);
 }
