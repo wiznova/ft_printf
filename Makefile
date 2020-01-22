@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2020/01/18 14:17:50 by skhalil       ########   odam.nl          #
+#    Updated: 2020/01/22 17:04:09 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,12 +47,21 @@ re: fclean all
 	gcc -c $(FLAGS) -I $(H_DIR) $< -o $@
 
 test:
+	@echo ""
+	@echo ""
+	@echo "#################################"
+	@echo "#################################"
+	@echo "#################################"
+	@echo "#################################"
+	@echo "#################################"
+	@date
+	@echo "#################################"
 	@echo "#################################"
 	@echo ""
 	@echo ""
 	@echo "===\x1b[1mTEST SEQUENCE\x1b[0m==="
 	@echo ""
-	@gcc $(FLAGS) $(SRCS) test_main.c -g -L./libft -lft
+	@gcc $(FLAGS) $(SRCS) test_main.c gnl/get_next_line.c gnl/get_next_line_utils.c -g -L./libft -lft 
 	@./a.out
 	@echo ""
 	@echo "===\x1b[1mENDTEST\x1b[0m==="
