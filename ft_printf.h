@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:06:53 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/18 17:14:34 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 18:23:45 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,31 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# include "libft/libft.h"
 
 typedef struct	s_format_specs{
-	int		justify; // 0 is default (right), 1 is left
-	int		padding; // 0 by def, otherwise is parsed
-	char	padding_ch; // ' ' by def, otherwise is 0
-	int		precision; // 6 by def, otherwise parsed
-	va_list	*args; // 6 by def, otherwise parsed
+	int		just;    // 0 is default (right), 1 is left
+	int		is_pad;  // boolean, 1 if padding was specified
+	int		pad;     // 0 by def, otherwise is parsed
+	char	pad_ch;  // ' ' by def, otherwise is 0
+	int		is_prec; // bool, 1 if precision was specified
+	int		prec;    // 6 by def for floats, otherwise parsed
+	char	conv;    // conversion char, by def: 'E' (means conversion not known)
+	va_list	*args;
+	char	*fmt;
 	int		ret;
 }				t_format_specs;
 
-int				ft_printf(const char *format, ...);
-char			is_in_list(char c, char *list);
-void			flag_parser(const char **format, t_format_specs *specs);
-void			precision_parser(const char **format, t_format_specs *specs);
-t_format_specs	format_spec_parser(const char **format, t_format_specs specs);
+int		ft_printf(const char *format, ...);
+char	is_in_list(char c, char *list);
+void	flag_parser(t_format_specs *sp);
+void	precision_parser(t_format_specs *sp);
+void	initialize_sp(t_format_specs *sp, va_list *args, char *format);
+void	reset_sp(t_format_specs *sp);
+void	format_spec_parser(t_format_specs *sp);
+void	write_one(char ch, t_format_specs *sp);
+void	ft_putnbr_co(int n, t_format_specs *sp);
+int		ft_numlen(int n);
+
 
 #endif

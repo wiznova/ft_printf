@@ -6,81 +6,82 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/01/18 17:21:44 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 19:02:13 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		print_specs(t_format_specs *specs, char *state)
+void		print_specs(t_format_specs *sp, char *state)
 {
 	printf("[%s]\n", state);
-	printf("justify: %d\n", specs->justify);
-	printf("padding: %d\n", specs->padding);
-	printf("padding_ch: |%c|\n", specs->padding_ch);
-	printf("precision: %d\n", specs->precision);
+	printf("just: %d\n", sp->just);
+	printf("pad: %d\n", sp->pad);
+	printf("pad_ch: |%c|\n", sp->pad_ch);
+	printf("prec: %d\n", sp->prec);
 	printf("[end]\n\n");
 }
 
-void		flag_parser(const char **format, t_format_specs *specs)
+void		flag_parser(t_format_specs *sp)
 {
-	while (is_in_list(**format, FLAG_LIST) != 0 && **format != '.' && is_in_list(**format, CONV_LIST) == 0)
+	while (is_in_list(*(sp->fmt), FLAG_LIST) != 0 && *(sp->fmt) != '.' && is_in_list(*(sp->fmt), CONV_LIST) == 0)
 	{
-		if (**format == '0')
+		if (*(sp->fmt) == '0')
 		{
-			specs->padding_ch = '0';
-			specs->justify = 0;
+			sp->pad_ch = '0';
+			sp->just = 0;
 		}
-		else if (**format == '-' && specs->padding_ch != '0')
-			specs->justify = 1;
-		(*format)++;
+		else if (*(sp->fmt) == '-' && sp->pad_ch != '0')
+			sp->just = 1;
+		(sp->fmt)++;
 	}
 }
 
-void		width_parser(const char **format, t_format_specs *specs)
+void		width_parser(t_format_specs *sp)
 {
-	while (is_in_list(**format, CONV_LIST) == 0 && **format != '.')
+	while (is_in_list(*(sp->fmt), CONV_LIST) == 0 && *(sp->fmt) != '.')
 	{
-		if (**format == '*')
+		if (*(sp->fmt) == '*')
 		{
-			specs->padding = va_arg(*(specs->args), int);
+			sp->pad = va_arg(*(sp->args), int);
 			break ;
 		}
-		else if (is_in_list(**format, "1234567890") != 0)
-			specs->padding = specs->padding * 10 + **format - '0'; //use atoi for that
+		else if (is_in_list(*(sp->fmt), "1234567890") != 0)
+			sp->pad = sp->pad * 10 + *sp->fmt - '0'; //use atoi for that
 		else
 			break ;
-		(*format)++;
+		(sp->fmt)++;
 	}
-	if (**format == '.')		// also check if precision hasn't been set before that
-		precision_parser(format, specs);
+	if (*(sp->fmt) == '.')		// also check if prec hasn't been set before that
+		precision_parser(sp);
 }
 
-void		precision_parser(const char **format, t_format_specs *specs)
+void		precision_parser(t_format_specs *sp)
 {
-	(*format)++;
-	while (is_in_list(**format, CONV_LIST) == 0)
+	(sp->fmt)++;
+	while (is_in_list(*(sp->fmt), CONV_LIST) == 0)
 	{
-		if (**format == '*')
+		if (*(sp->fmt) == '*')
 		{
-			specs->precision = va_arg(*(specs->args), int);
+			sp->prec = va_arg(*(sp->args), int);
 			break ;
 		}
-		else if (is_in_list(**format, "1234567890") != 0)
-			specs->precision = specs->precision * 10 + **format - '0';
+		else if (is_in_list(*(sp->fmt), "1234567890") != 0)
+			sp->prec = sp->prec * 10 + *sp->fmt - '0';
 		else
 			break ;
-		(*format)++;
+		(sp->fmt)++;
 	}
 }
 
-t_format_specs	format_spec_parser(const char **format, t_format_specs specs)
+void		format_spec_parser(t_format_specs *sp)
 {
-	(*format)++;
-	flag_parser(format, &specs);
-	if (**format == '.')
-		precision_parser(format, &specs);
+	(sp->fmt)++;
+	flag_parser(sp);
+	if (*(sp->fmt) == '.')
+		precision_parser(sp);
 	else
-		width_parser(format, &specs);
-	return (specs);
+		width_parser(sp);
+	if (is_in_list(*(sp->fmt), CONV_LIST) != 0)
+		sp->conv = *(sp->fmt);
 }
