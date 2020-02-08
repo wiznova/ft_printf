@@ -6,12 +6,13 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:06:53 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 18:23:45 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 19:39:06 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+# define DIGITS "1234567890"
 # define CONV_LIST "cspdiuxX%"
 # define FLAG_LIST "-0" // * and . are part of width and precision respectively
 

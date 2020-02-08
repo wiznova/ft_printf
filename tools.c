@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:47:05 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 18:29:21 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 19:21:52 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	initialize_sp(t_format_specs *sp, va_list *args, char *format)
 // 
 // Dealing with numbers
 //
+
 int		ft_numlen(int n)
 {
 	char *num_str;

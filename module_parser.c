@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 19:02:13 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 19:39:34 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,42 @@ void		print_specs(t_format_specs *sp, char *state)
 
 void		flag_parser(t_format_specs *sp)
 {
-	while (is_in_list(*(sp->fmt), FLAG_LIST) != 0 && *(sp->fmt) != '.' && is_in_list(*(sp->fmt), CONV_LIST) == 0)
+	char	cur_c;
+
+	cur_c = *(sp->fmt);
+	while (is_in_list(cur_c, FLAG_LIST) && cur_c != '.' && is_in_list(cur_c, CONV_LIST) == 0)
 	{
-		if (*(sp->fmt) == '0')
+		if (cur_c == '0')
 		{
 			sp->pad_ch = '0';
 			sp->just = 0;
 		}
-		else if (*(sp->fmt) == '-' && sp->pad_ch != '0')
+		else if (cur_c == '-' && sp->pad_ch == ' ')
 			sp->just = 1;
 		(sp->fmt)++;
+		cur_c = *(sp->fmt);
 	}
 }
 
 void		width_parser(t_format_specs *sp)
 {
-	while (is_in_list(*(sp->fmt), CONV_LIST) == 0 && *(sp->fmt) != '.')
+	char	cur_c;
+
+	cur_c = *(sp->fmt);
+	while (is_in_list(cur_c, CONV_LIST) == 0 && cur_c != '.')
 	{
-		if (*(sp->fmt) == '*')
+		if (cur_c == '*')
 		{
 			sp->pad = va_arg(*(sp->args), int);
+			(sp->fmt)++;
 			break ;
 		}
-		else if (is_in_list(*(sp->fmt), "1234567890") != 0)
+		else if (is_in_list(cur_c, DIGITS))
 			sp->pad = sp->pad * 10 + *sp->fmt - '0'; //use atoi for that
 		else
 			break ;
 		(sp->fmt)++;
+		cur_c = *(sp->fmt);
 	}
 	if (*(sp->fmt) == '.')		// also check if prec hasn't been set before that
 		precision_parser(sp);
@@ -58,19 +67,24 @@ void		width_parser(t_format_specs *sp)
 
 void		precision_parser(t_format_specs *sp)
 {
+	char	cur_c;
+
 	(sp->fmt)++;
-	while (is_in_list(*(sp->fmt), CONV_LIST) == 0)
+	cur_c = *(sp->fmt);
+	while (is_in_list(cur_c, CONV_LIST) == 0)
 	{
-		if (*(sp->fmt) == '*')
+		if (cur_c == '*')
 		{
 			sp->prec = va_arg(*(sp->args), int);
+			(sp->fmt)++;
 			break ;
 		}
-		else if (is_in_list(*(sp->fmt), "1234567890") != 0)
-			sp->prec = sp->prec * 10 + *sp->fmt - '0';
+		else if (is_in_list(cur_c, DIGITS))
+			sp->prec = sp->prec * 10 + *sp->fmt - '0'; // use atoi for this
 		else
 			break ;
 		(sp->fmt)++;
+		cur_c = *(sp->fmt);
 	}
 }
 

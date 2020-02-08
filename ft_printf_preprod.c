@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 18:24:28 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/08 19:23:33 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	launch_conversion(t_format_specs *sp)
 		d = va_arg(*(sp->args), int); 
 		if (ft_numlen(d) >= sp->pad)
 			ft_putnbr_co(d, sp);
-		// else if (sp->precision)
+		// else if (sp->precision) //what is this supposed to do?
 		else
 		{
 			start = sp->ret;
@@ -34,8 +34,6 @@ void	launch_conversion(t_format_specs *sp)
 		}
 	}
 }
-
-// implement a writer function
 
 int		ft_printf(const char *format, ...)
 {
@@ -51,18 +49,14 @@ int		ft_printf(const char *format, ...)
 			reset_sp(&sp);
 			format_spec_parser(&sp);
 
-			while (is_in_list(*(sp.fmt), "-0")) //patch for neg precision or 0 in prec
-				(sp.fmt)++;
-
-			if (sp.conv == 'E')
-				return (sp.ret);
+			if (sp.conv == 'E') // check if conversion is missing or not supported
+				return (sp.ret);// check return value of libc printf for that 
 			
 			launch_conversion(&sp);
 		}
 		else
 			write_one(*(sp.fmt), &sp);
 		(sp.fmt)++;
-		// first_arg = va_arg(args, int);
 	}
 	va_end(args);
 	return (sp.ret);
