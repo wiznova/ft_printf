@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2020/02/08 19:06:05 by skhalil       ########   odam.nl          #
+#    Updated: 2020/02/12 18:47:24 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,10 @@ test:
 	@echo ""
 	@echo ""
 	@echo "#################################"
+
+test_pars:
+	@gcc $(FLAGS) $(SRCS) test_parser.c gnl/get_next_line.c gnl/get_next_line_utils.c -g -L./libft -lft -g -o parser.out
+	@./parser.out
 
 #bonus: $(BONUS_O) $(OBJS)
 #	ar rc $(NAME) $(OBJS) $(BONUS_O)

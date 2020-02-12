@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 19:39:34 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/12 19:11:43 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void		width_parser(t_format_specs *sp)
 {
 	char	cur_c;
 
+	sp->is_pad = 1;
 	cur_c = *(sp->fmt);
 	while (is_in_list(cur_c, CONV_LIST) == 0 && cur_c != '.')
 	{
@@ -69,6 +70,7 @@ void		precision_parser(t_format_specs *sp)
 {
 	char	cur_c;
 
+	sp->is_prec = 1;
 	(sp->fmt)++;
 	cur_c = *(sp->fmt);
 	while (is_in_list(cur_c, CONV_LIST) == 0)
@@ -79,8 +81,12 @@ void		precision_parser(t_format_specs *sp)
 			(sp->fmt)++;
 			break ;
 		}
-		else if (is_in_list(cur_c, DIGITS))
-			sp->prec = sp->prec * 10 + *sp->fmt - '0'; // use atoi for this
+		else if (is_in_list(cur_c, DIGITS)) // sp->prec = sp->prec * 10 + *sp->fmt - '0'; // use atoi for this
+		{
+			sp->prec = ft_atoi(sp->fmt);
+			
+
+		}
 		else
 			break ;
 		(sp->fmt)++;

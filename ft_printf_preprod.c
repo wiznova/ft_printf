@@ -6,12 +6,15 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 19:23:33 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/12 18:25:20 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+// TODO:
+// parser: incorporate atoi, assign boolean values (is_pad, is_prec)
+//
 
 void	launch_conversion(t_format_specs *sp)
 {
