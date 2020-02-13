@@ -6,14 +6,15 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/13 16:06:37 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/13 16:40:00 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 // TODO:
-// parser: incorporate atoi, assign boolean values (is_pad, is_prec)
+// parser: incorporate atoi everywhere + simplify, since with offset it should be easier
+// conv_c: implementing more cases for padding and precision
 //
 
 void	conversion_d(t_format_specs *sp)
