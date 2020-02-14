@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/13 16:40:00 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/14 18:04:12 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,15 @@ void	conversion_c(t_format_specs *sp)
 			}
 		}
 	}
-	// if (sp->is_pad == 0 && sp->is_prec == 1)
+	if (sp->is_pad == 0 && sp->is_prec == 1) // ignore; if negative: act like width with just-left
+	{
+		write_one(sp->na.c, sp);
+		while (i < sp->prec - 1)
+			{
+				write_one(sp->pad_ch, sp);
+				i++;
+			}
+	}
 	// if (sp->is_pad == 1 && sp->is_prec == 1)
 }
 
@@ -89,9 +97,9 @@ int		ft_printf(const char *format, ...)
 
 	va_start(args, format);
 	initialize_sp(&sp, &args, (char *)format);
-	while (*format)
+	while (*(sp.fmt))
 	{
-		if (*format == '%')
+		if (*(sp.fmt) == '%')
 		{
 			reset_sp(&sp);
 			format_spec_parser(&sp);
@@ -101,8 +109,7 @@ int		ft_printf(const char *format, ...)
 			get_next_argument(&sp);
 			launch_conversion(&sp, sp.conv);
 		}
-		else
-			write_one(*(sp.fmt), &sp);
+		write_one(*(sp.fmt), &sp);
 		(sp.fmt)++;
 	}
 	va_end(args);

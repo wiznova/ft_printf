@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/13 16:33:24 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/14 17:39:36 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		offset(t_format_specs *sp)
 		(sp->fmt)++;
 		conv = is_in_list(cur_c, CONV_LIST);
 	}
-	(sp->conv) = conv;
+	// (sp->conv) = conv; //should be doen outside of this scope
 }
 
 void		precision_parser(t_format_specs *sp)
@@ -119,5 +119,9 @@ void		format_spec_parser(t_format_specs *sp)
 	else
 		width_parser(sp);
 	if (is_in_list(*(sp->fmt), CONV_LIST) != 0)
+	{
 		sp->conv = *(sp->fmt);
+		(sp->fmt)++;
+	}
+
 }
