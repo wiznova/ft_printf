@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:48:23 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/14 17:39:36 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/03/12 18:53:23 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,27 @@ void		flag_parser(t_format_specs *sp)
 	char	cur_c;
 
 	cur_c = *(sp->fmt);
-	while (is_in_list(cur_c, FLAG_LIST) && cur_c != '.' && is_in_list(cur_c, CONV_LIST) == 0)
+	while (is_in_list(cur_c, FLAG_LIST) && not_in_list(cur_c, CONV_LIST) && cur_c != '.')
 	{
 		if (cur_c == '0')
 		{
 			sp->pad_ch = '0';
-			sp->just = 0;
+			sp->just = RIGHT;
 		}
 		else if (cur_c == '-' && sp->pad_ch == ' ')
-			sp->just = 1;
+			sp->just = LEFT;
+		(sp->fmt)++;
+		cur_c = *(sp->fmt);
+	}
+}
+
+void		offset(t_format_specs *sp)
+{
+	char	cur_c;
+
+	cur_c = *(sp->fmt);
+	while (cur_c != '.' && not_in_list(cur_c, CONV_LIST) && *(sp->fmt)) // case: when there's no valid conv?
+	{
 		(sp->fmt)++;
 		cur_c = *(sp->fmt);
 	}
@@ -45,9 +57,9 @@ void		width_parser(t_format_specs *sp)
 {
 	char	cur_c;
 
-	sp->is_pad = 1;
+	sp->is_pad = TRUE;
 	cur_c = *(sp->fmt);
-	while (is_in_list(cur_c, CONV_LIST) == 0 && cur_c != '.')
+	while (not_in_list(cur_c, CONV_LIST) && cur_c != '.')
 	{
 		if (cur_c == '*')
 		{
@@ -55,41 +67,33 @@ void		width_parser(t_format_specs *sp)
 			(sp->fmt)++;
 			break ;
 		}
-		else if (is_in_list(cur_c, DIGITS))
-			sp->pad = sp->pad * 10 + *sp->fmt - '0'; //use atoi for that
+		else if (is_in_list(cur_c, DIGITS)) // sp->pad = sp->pad * 10 + *sp->fmt - '0'; //use atoi for that
+		{
+			sp->pad = ft_atoi(sp->fmt);
+			offset(sp);
+			break ;
+		}
 		else
 			break ;
 		(sp->fmt)++;
 		cur_c = *(sp->fmt);
 	}
-	if (*(sp->fmt) == '.')		// also check if prec hasn't been set before that
+	cur_c = *(sp->fmt);
+	if (cur_c == '.')	// also check if prec hasn't been set before that
 		precision_parser(sp);
+	else if (is_in_list(cur_c, CONV_LIST))
+		sp->conv = cur_c;
 }
 
-void		offset(t_format_specs *sp)
-{
-	char	cur_c;
-	int		conv;
-
-	cur_c = 'E';
-	conv = is_in_list(cur_c, CONV_LIST);
-	while (conv == 0) // case: when there's no valid conv?
-	{
-		cur_c = *(sp->fmt);
-		(sp->fmt)++;
-		conv = is_in_list(cur_c, CONV_LIST);
-	}
-	// (sp->conv) = conv; //should be doen outside of this scope
-}
 
 void		precision_parser(t_format_specs *sp)
 {
 	char	cur_c;
 
-	sp->is_prec = 1;
+	sp->is_prec = TRUE;
 	(sp->fmt)++;
 	cur_c = *(sp->fmt);
-	while (is_in_list(cur_c, CONV_LIST) == 0)
+	while (not_in_list(cur_c, CONV_LIST))
 	{
 		if (cur_c == '*')
 		{
@@ -97,7 +101,7 @@ void		precision_parser(t_format_specs *sp)
 			(sp->fmt)++;
 			break ;
 		}
-		else if (is_in_list(cur_c, DIGITS)) // sp->prec = sp->prec * 10 + *sp->fmt - '0'; // use atoi for this
+		else if (is_in_list(cur_c, DIGITS) || cur_c == '-') // sp->prec = sp->prec * 10 + *sp->fmt - '0'; // use atoi for this
 		{
 			sp->prec = ft_atoi(sp->fmt);
 			offset(sp);

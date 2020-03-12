@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 18:07:04 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/14 18:04:12 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/03/12 19:01:01 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // TODO:
 // parser: incorporate atoi everywhere + simplify, since with offset it should be easier
 // conv_c: implementing more cases for padding and precision
+// wtf is wrong with return value? (wrong by one in many cases)
 //
 
 void	conversion_d(t_format_specs *sp)
@@ -43,7 +44,16 @@ void	conversion_c(t_format_specs *sp)
 	i = 0;
 	if (sp->is_pad == 0 && sp->is_prec == 0)
 		write_one(sp->na.c, sp);
-	if (sp->is_pad == 1 && sp->is_prec == 0)
+	else if (sp->prec < 0)
+	{
+		write_one(sp->na.c, sp);
+		while (sp->prec + i + 1 < 0)
+		{
+			write_one(' ', sp);
+			i++;
+		}
+	}
+	else if (sp->is_pad == 1 && sp->prec >= 0)// && sp->is_prec == 0)
 	{
 		if (sp->just == 0)
 		{
@@ -64,15 +74,9 @@ void	conversion_c(t_format_specs *sp)
 			}
 		}
 	}
-	if (sp->is_pad == 0 && sp->is_prec == 1) // ignore; if negative: act like width with just-left
-	{
+	else if (sp->is_pad == 0 && sp->is_prec == 1) // ignore; if negative: act like width with just-left
 		write_one(sp->na.c, sp);
-		while (i < sp->prec - 1)
-			{
-				write_one(sp->pad_ch, sp);
-				i++;
-			}
-	}
+
 	// if (sp->is_pad == 1 && sp->is_prec == 1)
 }
 
@@ -109,8 +113,11 @@ int		ft_printf(const char *format, ...)
 			get_next_argument(&sp);
 			launch_conversion(&sp, sp.conv);
 		}
-		write_one(*(sp.fmt), &sp);
-		(sp.fmt)++;
+		else
+		{
+			write_one(*(sp.fmt), &sp);
+			(sp.fmt)++;
+		}
 	}
 	va_end(args);
 	return (sp.ret);

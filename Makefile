@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2020/02/14 17:06:05 by skhalil       ########   odam.nl          #
+#    Updated: 2020/03/12 17:40:01 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,10 @@ test:
 test_pars:
 	@gcc $(FLAGS) $(SRCS) test_parser.c gnl/get_next_line.c gnl/get_next_line_utils.c -g -L./libft -lft -g -o parser.out
 	@./parser.out
+
+testmain:
+	@gcc $(FLAGS) $(SRCS) test_main2.c -g -L./libft -lft -g -o a.out
+	@./a.out
 
 .PHONY:printf
 printf:

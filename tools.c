@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/15 14:47:05 by skhalil        #+#    #+#                */
-/*   Updated: 2020/02/08 19:21:52 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/02/15 16:23:45 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@ char	is_in_list(char c, char *list)
 		list++;
 	}
 	return (0);
+}
+
+char	not_in_list(char c, char *list)
+{
+	while (*list)
+	{
+		if (c == *list)
+			return (0);
+		list++;
+	}
+	return (1);
 }
 
 void	write_one(char ch, t_format_specs *sp)
