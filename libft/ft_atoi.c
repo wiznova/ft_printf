@@ -6,7 +6,7 @@
 /*   By: skhalil <skhalil@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/01 18:50:35 by skhalil        #+#    #+#                */
-/*   Updated: 2019/11/30 18:06:34 by skhalil       ########   odam.nl         */
+/*   Updated: 2020/03/12 19:42:56 by skhalil       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int			ft_atoi(const char *str)
 
 	i = 0;
 	res = 0;
+	overfl = 0;
 	isws_co((char *)str, &i);
 	sign = 1 - 2 * (str[i] == '-');
 	if (str[i] == '-' || str[i] == '+')

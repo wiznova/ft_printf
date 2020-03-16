@@ -6,7 +6,7 @@
 #    By: skhalil <skhalil@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/12/23 13:27:03 by skhalil        #+#    #+#                 #
-#    Updated: 2020/03/12 17:40:01 by skhalil       ########   odam.nl          #
+#    Updated: 2020/03/12 19:41:13 by skhalil       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ test_pars:
 	@./parser.out
 
 testmain:
-	@gcc $(FLAGS) $(SRCS) test_main2.c -g -L./libft -lft -g -o a.out
+	@gcc $(FLAGS) $(SRCS) test_main2.c ./libft/ft_atoi.c -g -L./libft -lft -g -o a.out
 	@./a.out
 
 .PHONY:printf
