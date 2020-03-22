@@ -12,16 +12,6 @@
 
 #include "ft_printf.h"
 
-void		print_specs(t_format_specs *sp, char *state)
-{
-	printf("[%s]\n", state);
-	printf("just: %d\n", sp->just);
-	printf("pad: %d\n", sp->pad);
-	printf("pad_ch: |%c|\n", sp->pad_ch);
-	printf("prec: %d\n", sp->prec);
-	printf("[end]\n\n");
-}
-
 void		flag_parser(t_format_specs *sp)
 {
 	char	cur_c;
@@ -85,8 +75,6 @@ void		width_parser(t_format_specs *sp)
 	cur_c = *(sp->fmt);
 	if (cur_c == '.')	// also check if prec hasn't been set before that
 		precision_parser(sp);
-	else if (is_in_list(cur_c, CONV_LIST)) // do it elsewhere? seems unintuitive to be done here
-		sp->conv = cur_c;
 }
 
 
