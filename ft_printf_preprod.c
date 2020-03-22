@@ -101,15 +101,15 @@ int		ft_printf(const char *format, ...)
 
 	va_start(args, format);
 	initialize_sp(&sp, &args, (char *)format);
+	// main loop, @todo check, if I'm missing something here (ref)
 	while (*(sp.fmt))
 	{
 		if (*(sp.fmt) == '%')
 		{
-			reset_sp(&sp);
 			format_spec_parser(&sp);
 
-			if (sp.conv == 'E') // check if conversion is missing or not supported
-				return (sp.ret);// check return value of libc printf for that 
+			if (sp.conv == 'E') // a check if conversion is missing or not supported
+				return (sp.ret);// @todo what's the return value of libc printf for that?
 			get_next_argument(&sp);
 			launch_conversion(&sp, sp.conv);
 		}

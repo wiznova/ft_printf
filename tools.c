@@ -12,6 +12,18 @@
 
 #include "ft_printf.h"
 
+// @todo remove before submitting
+
+void		print_specs(t_format_specs *sp, char *state)
+{
+	printf("[%s]\n", state);
+	printf("just: %d\n", sp->just);
+	printf("pad: %d\n", sp->pad);
+	printf("pad_ch: |%c|\n", sp->pad_ch);
+	printf("prec: %d\n", sp->prec);
+	printf("[end]\n\n");
+}
+
 char	is_in_list(char c, char *list)
 {
 	while (*list)
@@ -34,7 +46,10 @@ char	not_in_list(char c, char *list)
 	return (1);
 }
 
-void	write_one(char ch, t_format_specs *sp)
+// @todo change 2nd parameter to be just *int for incrementing
+// *var += write(1, &ch, 1);
+
+void	write_one(char ch, t_format_specs *sp) 
 {
 	write(1, &ch, 1);
 	(sp->ret)++;
@@ -42,31 +57,33 @@ void	write_one(char ch, t_format_specs *sp)
 
 /* 
 ** Doesn't reset args, fmt and ret
+** launched within format_spec_parser
 */
 
 void	reset_sp(t_format_specs *sp)
 {
-	sp->just = 0;
-	sp->is_pad = 0;
+	sp->just = RIGHT;
+	sp->is_pad = FALSE;
 	sp->pad = 0;
 	sp->pad_ch = ' ';
-	sp->is_prec = 0;
+	sp->is_prec = FALSE;
 	sp->prec = 0;
 	sp->conv = 'E';
 }
 
+// min of what is needed for displaying simple string
+
 void	initialize_sp(t_format_specs *sp, va_list *args, char *format)
 {
-	reset_sp(sp);
 	sp->args = args;
 	sp->fmt = format;
 	sp->ret = 0;
 }
 
 
-// 
-// Dealing with numbers
-//
+/*
+** Dealing with numbers
+*/
 
 int		ft_numlen(int n)
 {

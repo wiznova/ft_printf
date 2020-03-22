@@ -37,11 +37,11 @@ typedef struct	s_nextarg{
 typedef struct	s_format_specs{
 	int			just;    // 0 is default (right), 1 is left
 	int			is_pad;  // boolean, 1 if padding was specified
-	int			pad;     // 0 by def, otherwise is parsed
+	int			pad;     // parsed value, 0 by def
 	char		pad_ch;  // ' ' by def, otherwise is 0
-	int			is_prec; // bool, 1 if precision was specified
+	int			is_prec; // boolean, 1 if precision was specified
 	int			prec;    // 6 by def for floats, otherwise parsed
-	char		conv;    // conversion char, by def: 'E' (means conversion not known)
+	char		conv;    // conversion char, by def: 'E' ('error' - means conversion not known)
 	t_nextarg	na;      // stands for "next argument"
 	va_list		*args;
 	char		*fmt;
